@@ -51,8 +51,7 @@ trackr = [1,0,0,0,0,0]
 obsrectl.y = 5
 obsrectr.y = 20
 
-speedl = 0.1
-speedr = 0.2
+speed = 0.1
 prevl = 0
 prevr = 0
 
@@ -68,14 +67,14 @@ while 1:
 	countl = 0
 	countr = 0
 	while i < len(obsyl)-1:
-		if trackl[i] == 0 and countl == 0 and obsyl[prevl] > random.randint(200,250) :
+		if trackl[i] == 0 and countl == 0 and obsyl[prevl] > random.randint(200,250):
 			obsyl[i] = 5
 			obsrectl.y = obsyl[i]		
 			trackl[i] = 1
 			prevl = i
 			screen.blit(obs, obsrectl)
 			countl = 1
-                if trackr[i] == 0 and countr == 0 and obsyr[prevr] > random.randint(150,200):
+		if trackr[i] == 0 and countr == 0 and obsyr[prevr] > random.randint(150,200):
 			obsyr[i] = 20
 			obsrectr.y = obsyr[i]
 			trackr[i] = 1
@@ -83,20 +82,20 @@ while 1:
 			screen.blit(obs, obsrectr)
 			countr = 1
 		if trackl[i] == 1:
-			obsrectl.y = obsyl[i] + speedl
-			obsyl[i] = obsyl[i] + speedl
+			obsrectl.y = obsyl[i] + speed
+			obsyl[i] = obsyl[i] + speed
 			screen.blit(obs, obsrectl)
 			if obsrectl.y > height:
 				obsyl[i] = 0
 				trackl[i] = 0
 		if trackr[i] == 1:
-			obsrectr.y = obsyr[i] + speedr
-			obsyr[i] = obsyr[i] + speedr
+			obsrectr.y = obsyr[i] + speed
+			obsyr[i] = obsyr[i] + speed
 			screen.blit(obs, obsrectr)
 			if obsrectr.y > height:
 				obsyr[i] = 0
 				trackr[i] = 0		
-                i+=1
+		i+=1
 	if event.type == pygame.KEYDOWN:
 		if pygame.key.name(event.key) == 'right':
 			ninrect.x = 620 - wallwidth - 30
