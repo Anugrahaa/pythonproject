@@ -47,8 +47,9 @@ obsyl = [5.0,0.0,0.0,0.0,0.0,0.0]
 obsyr = [0.0,0.0,20.0,0.0,0.0,0.0]
 trackl = [1,0,0,0,0,0]
 trackr = [1,0,0,0,0,0]
-randomleft = [200.0,230.0,250.0,280.0,300.0]
-randomright = [150.0,180.0,200.0,230.0,250.0]
+
+obsrectl.y = 5
+obsrectr.y = 20
 
 speed = 0.1
 prevl = 0
@@ -93,7 +94,7 @@ while 1:
 	countl = 0
 	countr = 0
 	while i < len(obsyl)-1:
-		if trackl[i] == 0 and countl == 0 and obsyl[prevl] > random.randint(250,300):
+		if trackl[i] == 0 and countl == 0 and obsyl[prevl] > random.randint(200,250):
 			obsyl[i] = 5
 			obsrectl.y = obsyl[i]		
 			trackl[i] = 1
@@ -101,7 +102,7 @@ while 1:
 			screen.blit(obs, obsrectl)
 			countl = 1
 		if trackr[i] == 0 and countr == 0 and obsyr[prevr] > random.randint(150,200):
-			obsyr[i] = 40
+			obsyr[i] = 20
 			obsrectr.y = obsyr[i]
 			trackr[i] = 1
 			prevr = i
@@ -124,7 +125,7 @@ while 1:
 				quitgame()
 			if obsrectr.y > height:
 				obsyr[i] = 0
-				trackr[i] = 0
+				trackr[i] = 0	
 		i+=1
 	if event.type == pygame.KEYDOWN:
 		if pygame.key.name(event.key) == 'right':
