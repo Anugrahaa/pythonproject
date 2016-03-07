@@ -1,15 +1,15 @@
 import sys, pygame
 import random
-import time
+from time import sleep
 
 pygame.init()
- 
+
 size = width, height = 640, 480
 black = 0, 0, 0
- 
-#draw screen 
+
+#draw screen
 screen = pygame.display.set_mode(size)
- 
+
 #load and position wall 
 wall = pygame.image.load("./images/wall.jpg")
 wall = pygame.transform.scale(wall, (50,480))
@@ -44,17 +44,42 @@ obsrectl.x = 20 + wallwidth
 obsrectr.x = wallrectr.x - obswidth
 
 obsyl = [5.0,0.0,0.0,0.0,0.0,0.0]
-obsyr = [20.0,0.0,0.0,0.0,0.0,0.0]
+obsyr = [0.0,0.0,20.0,0.0,0.0,0.0]
 trackl = [1,0,0,0,0,0]
 trackr = [1,0,0,0,0,0]
+randomleft = [200.0,230.0,250.0,280.0,300.0]
+randomright = [150.0,180.0,200.0,230.0,250.0]
 
-obsrectl.y = 5
-obsrectr.y = 20
-
-speedl = 0.1
-speedr = 0.2
+speed = 0.1
 prevl = 0
 prevr = 0
+
+def quitgame():
+	#blinking ninja
+	sleep(0.2)
+	screen.blit(ninja, (640,320))
+	pygame.display.flip()
+	sleep(0.2)
+	screen.blit(ninja, ninrect)
+	pygame.display.flip()
+	sleep(0.2)
+	screen.blit(ninja, (640,320))
+	pygame.display.flip()
+	sleep(0.2)
+	screen.blit(ninja, ninrect)
+	pygame.display.flip()
+	while 1:
+		sleep(0.1)
+		screen.fill(black)
+		gameover = pygame.image.load("./images/gameover.jpg")
+		gameover = pygame.transform.scale(gameover, (400,200))
+		gameoverrect = gameover.get_rect()
+		gameoverrect.x = 100
+		gameoverrect.y = 100
+		screen.blit(gameover,gameoverrect)
+		pygame.display.flip()
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT: sys.exit()
 
 while 1:
 	for event in pygame.event.get():
@@ -68,35 +93,39 @@ while 1:
 	countl = 0
 	countr = 0
 	while i < len(obsyl)-1:
-		if trackl[i] == 0 and countl == 0 and obsyl[prevl] > random.randint(200,250) :
+		if trackl[i] == 0 and countl == 0 and obsyl[prevl] > random.randint(250,300):
 			obsyl[i] = 5
 			obsrectl.y = obsyl[i]		
 			trackl[i] = 1
 			prevl = i
 			screen.blit(obs, obsrectl)
 			countl = 1
-                if trackr[i] == 0 and countr == 0 and obsyr[prevr] > random.randint(150,200):
-			obsyr[i] = 20
+		if trackr[i] == 0 and countr == 0 and obsyr[prevr] > random.randint(150,200):
+			obsyr[i] = 40
 			obsrectr.y = obsyr[i]
 			trackr[i] = 1
 			prevr = i
 			screen.blit(obs, obsrectr)
 			countr = 1
 		if trackl[i] == 1:
-			obsrectl.y = obsyl[i] + speedl
-			obsyl[i] = obsyl[i] + speedl
+			obsrectl.y = obsyl[i] + speed
+			obsyl[i] = obsyl[i] + speed
 			screen.blit(obs, obsrectl)
+			if ninrect.colliderect(obsrectl):
+				quitgame()
 			if obsrectl.y > height:
 				obsyl[i] = 0
 				trackl[i] = 0
 		if trackr[i] == 1:
-			obsrectr.y = obsyr[i] + speedr
-			obsyr[i] = obsyr[i] + speedr
+			obsrectr.y = obsyr[i] + speed
+			obsyr[i] = obsyr[i] + speed
 			screen.blit(obs, obsrectr)
+			if ninrect.colliderect(obsrectr):
+				quitgame()
 			if obsrectr.y > height:
 				obsyr[i] = 0
-				trackr[i] = 0		
-                i+=1
+				trackr[i] = 0
+		i+=1
 	if event.type == pygame.KEYDOWN:
 		if pygame.key.name(event.key) == 'right':
 			ninrect.x = 620 - wallwidth - 30
